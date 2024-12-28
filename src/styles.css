@@ -68,17 +68,58 @@ body{
     grid-area: header;
     background-color: red;
 }
+
+/* SIDEBAR */
 .sidebar{
     grid-area: sidebar;
     background-color: grey;
 
     padding:30px;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
 
 }
-.sidebar-project-list{
-    font-size: 2rem;
+.sidebar-header-container{
+    font-size: 1rem;
     font-weight: bold;
+    
+    display:flex;
+    justify-content: space-between;
+    align-items: center;
+
 }
+.sidebar-header-container:hover{
+   background-color: darkgrey;
+}
+
+.sidebar_add{
+    width:15px;
+    
+    
+    border:none;
+
+    display:flex;
+    justify-content: center;
+    align-items: center;
+}
+.sidebar_add:hover{
+    
+    background-color: darkgrey;
+}
+
+
+.list_container{
+    height:auto;
+    display:flex;
+    
+}
+.list-item{
+    padding-left: 20px;
+}
+
+
+/* CONTENT */
 .content-container{
     grid-area: content-container;
     background-color: lightblue;

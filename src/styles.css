@@ -107,14 +107,35 @@ body{
     
     background-color: darkgrey;
 }
-
+ /* Form */
 .form-container{
     position: absolute;
     top: 25%;
     left: 50%;
     transform: translate(-50%, -50%);
+
+}
+form{
+    width: 100%;
+    padding:10px;
+    
+
+
+    background-color: green;
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+}
+.btn-container{
+    display:flex;
+    justify-content: flex-end;
+    gap:5px;
+}
+.project_btn_container button{
+    border-radius: 12px;
 }
 .submit-btn{
+    width:50px;
     
 }
 

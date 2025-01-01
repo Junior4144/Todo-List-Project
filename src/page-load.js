@@ -63,16 +63,37 @@ function add_project_form(){
 
     const project_form = document.createElement('form');
 
-    const project_title_label = document.createElement('label');
-    project_title_label.textContent = "Project Name:"
-    project_title_label.htmlFor = 'project-title';
+    // Title 
+    const title_container = document.createElement('div');
 
-    const project_title_input = document.createElement('input')
-    project_title_input.id = "project-title";
+    const title = document.createElement('div');
+    title.textContent = "Add Project:";
 
+    title_container.appendChild(title);
+    // Project details
+    const project_details_container= document.createElement('div');
+
+
+    const project_details_label = document.createElement('label');
+    project_details_label.textContent = "Name: ";
+    project_details_label.htmlFor = 'project-details';
+
+    const project_details_input = document.createElement('input')
+    project_details_input.id = "project-details";
+
+    project_details_container.appendChild(project_details_label);
+    project_details_container.appendChild(project_details_input);
+
+    
+    // Button container
+    const project_btn_container = document.createElement('div');
+    project_btn_container.classList.add('btn-container')
+    //create btn
     const create_project_btn = document.createElement('button');
     create_project_btn.classList.add('submit-btn');
+    create_project_btn.classList.add('project-btn');
     create_project_btn.textContent = 'submit';
+    
     create_project_btn.addEventListener('click', (event) =>{
         body.style.position = 'static';
         event.preventDefault();
@@ -81,11 +102,25 @@ function add_project_form(){
         //remove form container from body
         //save info and create project
         //formate form to have better styling
-    })
+    });
+
+    //cancel button
+    const cancel_project_btn = document.createElement('button');
+    cancel_project_btn.classList.add('cancel-btn');
+    cancel_project_btn.classList.add('project-btn');
+    cancel_project_btn.textContent = 'cancel';
+
+
+
+    project_btn_container.appendChild(cancel_project_btn);
+    project_btn_container.appendChild(create_project_btn);
+   
+
+    project_form.appendChild(title_container);
+
+    project_form.appendChild(project_details_container);
     
-    project_form.appendChild(project_title_label);
-    project_form.appendChild(project_title_input);
-    project_form.appendChild(create_project_btn)
+    project_form.appendChild(project_btn_container);
     form_container.appendChild(project_form)
     body.appendChild(form_container);
 }

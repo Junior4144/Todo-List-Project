@@ -55,7 +55,11 @@ export function content_container(){
 function add_project_form(){
     //bleed background
     //absolute
+    //builds form that creates a project
     const body = document.body;
+    body.style.position = 'relative';
+    const form_container = document.createElement('div');
+    form_container.classList.add('form-container');
 
     const project_form = document.createElement('form');
 
@@ -66,9 +70,23 @@ function add_project_form(){
     const project_title_input = document.createElement('input')
     project_title_input.id = "project-title";
 
-    
+    const create_project_btn = document.createElement('button');
+    create_project_btn.classList.add('submit-btn');
+    create_project_btn.textContent = 'submit';
+    create_project_btn.addEventListener('click', (event) =>{
+        body.style.position = 'static';
+        event.preventDefault();
+
+        //location.reload();
+        //remove form container from body
+        //save info and create project
+        //formate form to have better styling
+    })
     
     project_form.appendChild(project_title_label);
     project_form.appendChild(project_title_input);
-    body.appendChild(project_form);
+    project_form.appendChild(create_project_btn)
+    form_container.appendChild(project_form)
+    body.appendChild(form_container);
 }
+

@@ -1,6 +1,91 @@
 
 //Contains DOM
 
+//create a factory
+const project_tabs = (() => { 
+    //an array of projects
+    let projects_arr = [];
+
+    const update_project = (project) =>{
+        projects_arr.push(project);
+        console.log(projects_arr);
+    }
+    return{
+        update_project
+    }
+
+})();
+//project object
+function project(title){
+    //array of todos
+    let todo_arr = [];
+
+    this.title = title;
+
+    const update_todo = (todo) => {
+        todo_arr.push(todo);
+        console.log(todo_arr);
+    }
+    const getTitle = () =>{
+        return title;
+    }
+    return{
+        update_todo,
+        getTitle
+    }
+};
+
+function todo(title, description, dueDate, priority){
+    this.title = title;
+    this.description = description;
+    this.dueDate = dueDate;
+    this.priority = priority;
+    
+    const getTitle = (() =>{
+        return title;
+    });
+    const getDescription = (() =>{
+        return description;
+    });
+    const getDueDate = (() =>{
+        return dueDate;
+    });
+    const getPriority = (() =>{
+        return priority;
+    });
+    return {
+        getTitle,
+        getDescription,
+        getDueDate,
+        getPriority
+    }
+};
+    
+
+export function header(){
+    const header = document.querySelector('.header');
+
+}
+
+export function content_container(project){
+    const content_container = document.querySelector('.content-container');
+    
+    const content_header = document.createElement('div');
+    content_header.classList.add('content-header');
+
+    const content_task_list = document.createElement('div');
+    content_task_list.classList.add('content-task-list');
+
+    const header_title = document.createElement('div');
+    header_title.textContent = project.getTitle();
+
+    content_header.appendChild(header_title);
+
+
+    content_container.appendChild(content_header);
+    content_container.appendChild(content_task_list);
+}
+
 export function sidebar(){
     const sidebar = document.querySelector('.sidebar');
 
@@ -32,8 +117,16 @@ export function sidebar(){
     list_item.classList.add("list-item");
     list_item.textContent = "Default Project";
 
+    const projectItem = new project(list_item.textContent);
+    project_tabs.update_project(projectItem);
+    
+
     list_item.addEventListener('click', () =>{
+        const content = document.querySelector('.content-container');
+        content.innerHTML = '';
         
+        content_container(projectItem);
+
     });
 
     
@@ -41,15 +134,6 @@ export function sidebar(){
 
     sidebar.appendChild(sidebar_header_container);
     sidebar.appendChild(sidebar_list_container);
-}
-
-export function header(){
-    const header = document.querySelector('.header');
-
-}
-
-export function content_container(){
-
 }
 
 function add_project_form(){
@@ -97,19 +181,30 @@ function add_project_form(){
     
     submit_project_btn.addEventListener('click', (event) =>{
         event.preventDefault();
+
         const form_container = document.querySelector('.form-container');
         body.style.position = 'static';
         
 
         const form_details = document.getElementById('project-details');
-        const project_name = form_details.value;
+
+        const projectItem = new project(form_details.value);
         
+
         const list_container = document.querySelector('.list-container');
         
         const item = document.createElement('div');
-        item.textContent = project_name;
+        item.textContent = projectItem.getTitle();
+
+        item.addEventListener('click', () =>{
+            const content = document.querySelector('.content-container');
+            content.innerHTML = '';
+            content_container(projectItem);
+        });
 
         list_container.appendChild(item);
+
+        project_tabs.update_project(projectItem);
 
         body.removeChild(form_container);
 

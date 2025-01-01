@@ -59,14 +59,14 @@ body{
     
     display:grid;
     grid-template-columns: 1fr 4fr;
-    grid-template-rows: 100px minmax(650px, auto);
+    grid-template-rows: 80px minmax(650px, auto);
     grid-template-areas: 
     "header header"
     "sidebar content-container";
 }
 .header{
     grid-area: header;
-    background-color: red;
+    background-color: darkcyan;
 }
 
 /* SIDEBAR */
@@ -163,11 +163,18 @@ form{
     grid-area: content-container;
     background-color: lightblue;
     
-}
-.content-header{
+    padding: 20px;  
+    display: grid;
+    grid-template-rows: 80px auto;
 
 }
-.content{
+.content-header{
+    display:flex;
+    justify-content: flex-start;
+    align-items: center;
+    
+}
+.content-task-list{
 
 }
 

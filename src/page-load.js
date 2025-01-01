@@ -21,16 +21,16 @@ export function sidebar(){
     header_add.addEventListener('click', () =>{
         // activate from 
         add_project_form();
-    })
+    });
 
     sidebar_header_container.appendChild(header_add);
     
     const sidebar_list_container= document.createElement('div');
-    sidebar_list_container.classList.add('list_container');
+    sidebar_list_container.classList.add('list-container');
 
     const list_item = document.createElement('div');
     list_item.classList.add("list-item");
-    list_item.textContent = "project 1";
+    list_item.textContent = "Default Project";
 
     list_item.addEventListener('click', () =>{
         
@@ -88,7 +88,7 @@ function add_project_form(){
     // Button container
     const project_btn_container = document.createElement('div');
     project_btn_container.classList.add('btn-container')
-    //create btn
+    //submit btn
     const submit_project_btn = document.createElement('button');
     submit_project_btn.classList.add('submit-btn');
     submit_project_btn.classList.add('project-btn');
@@ -104,14 +104,16 @@ function add_project_form(){
         const form_details = document.getElementById('project-details');
         const project_name = form_details.value;
         
+        const list_container = document.querySelector('.list-container');
+        
+        const item = document.createElement('div');
+        item.textContent = project_name;
+
+        list_container.appendChild(item);
 
         body.removeChild(form_container);
 
         
-        //location.reload();
-        //remove form container from body
-        //save info and create project
-        //formate form to have better styling
     });
 
     //cancel button

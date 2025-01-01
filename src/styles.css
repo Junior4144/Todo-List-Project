@@ -107,6 +107,21 @@ body{
     
     background-color: darkgrey;
 }
+.list-container{
+    display:flex;
+    flex-direction: column;
+    height:auto;
+    gap:5px;
+}
+
+
+.list-container div{
+    padding-left: 20px;
+}
+.list-container div:hover{
+    background-color: darkgrey;
+}
+
  /* Form */
 .form-container{
     position: absolute;
@@ -140,14 +155,7 @@ form{
 }
 
 
-.list_container{
-    height:auto;
-    display:flex;
-    
-}
-.list-item{
-    padding-left: 20px;
-}
+
 
 
 /* CONTENT */

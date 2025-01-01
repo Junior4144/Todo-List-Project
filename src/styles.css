@@ -107,11 +107,30 @@ body{
     
     background-color: darkgrey;
 }
+
+
 .list-container{
     display:flex;
     flex-direction: column;
     height:auto;
     gap:5px;
+}
+.list-item{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+.list-item  button{
+    font-size: .6rem;
+    width:30px;
+    height:15px;
+    border-radius: 8px;
+    border:none;
+    
+}
+.list-item  button:hover{
+    border: 1px solid red;
+    
 }
 
 
@@ -172,7 +191,8 @@ form{
     display:flex;
     justify-content: flex-start;
     align-items: center;
-
+    font-size: 2rem;
+    font-weight: 600;
 }
 .content-task-list{
     display:flex;

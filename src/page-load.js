@@ -89,15 +89,25 @@ function add_project_form(){
     const project_btn_container = document.createElement('div');
     project_btn_container.classList.add('btn-container')
     //create btn
-    const create_project_btn = document.createElement('button');
-    create_project_btn.classList.add('submit-btn');
-    create_project_btn.classList.add('project-btn');
-    create_project_btn.textContent = 'submit';
+    const submit_project_btn = document.createElement('button');
+    submit_project_btn.classList.add('submit-btn');
+    submit_project_btn.classList.add('project-btn');
+    submit_project_btn.textContent = 'submit';
     
-    create_project_btn.addEventListener('click', (event) =>{
-        body.style.position = 'static';
+    
+    submit_project_btn.addEventListener('click', (event) =>{
         event.preventDefault();
+        const form_container = document.querySelector('.form-container');
+        body.style.position = 'static';
+        
 
+        const form_details = document.getElementById('project-details');
+        const project_name = form_details.value;
+        
+
+        body.removeChild(form_container);
+
+        
         //location.reload();
         //remove form container from body
         //save info and create project
@@ -110,10 +120,16 @@ function add_project_form(){
     cancel_project_btn.classList.add('project-btn');
     cancel_project_btn.textContent = 'cancel';
 
+    cancel_project_btn.addEventListener('click', (event) =>{
+        event.preventDefault();
+        const body = document.body;
+        const form_container = document.querySelector('.form-container')
+        body.removeChild(form_container);
+    });
 
 
     project_btn_container.appendChild(cancel_project_btn);
-    project_btn_container.appendChild(create_project_btn);
+    project_btn_container.appendChild(submit_project_btn);
    
 
     project_form.appendChild(title_container);

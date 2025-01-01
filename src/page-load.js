@@ -26,6 +26,20 @@ function project(title){
         todo_arr.push(todo);
         console.log(todo_arr);
     }
+    const deleteFromArr = (todo) => {
+        //add an index of location to each todo, with index splice from arr
+        todo_arr.splice(todo.getIndex(), 1);
+    }
+    const resetIndexes = () =>{
+        for (let index = 0; index < todo_arr.length; index++) {
+            todo_arr[index].setIndex(index);
+        
+        }
+    }
+    const arr_size = () =>{
+
+        return todo_arr.length;
+    }
     const getTitle = () =>{
         return title;
     }
@@ -35,7 +49,10 @@ function project(title){
     return{
         update_todo_arr,
         getTitle,
-        getArr
+        getArr,
+        deleteFromArr,
+        arr_size,
+        resetIndexes
     }
 };
 
@@ -44,6 +61,7 @@ function todo(title, description, dueDate, priority){
     this.description = description;
     this.dueDate = dueDate;
     this.priority = priority;
+    this.index = 0;
     
     const getTitle = (() =>{
         return title;
@@ -57,11 +75,19 @@ function todo(title, description, dueDate, priority){
     const getPriority = (() =>{
         return priority;
     });
+    const setIndex = ((index) =>{
+        this.index = index;
+    })
+    const getIndex = () =>{
+        return this.index;
+    }
     return {
         getTitle,
         getDescription,
         getDueDate,
-        getPriority
+        getPriority,
+        setIndex,
+        getIndex
     }
 };
     
@@ -72,7 +98,7 @@ export function header(){
 }
 
 export function content_container(project){
-    const content_container = document.querySelector('.content-container');
+    const main_content_container = document.querySelector('.content-container');
     //header
     const content_header = document.createElement('div');
     content_header.classList.add('content-header');
@@ -92,8 +118,13 @@ export function content_container(project){
         const todo_container = document.createElement('div');
         todo_container.classList.add('todo-container')
 
+        const todo_left_side = document.createElement('div');
+        todo_left_side.classList.add('todo-left-side');
+        const todo_right_side = document.createElement('div');
+        todo_right_side.classList.add('todo-right-side');
+
         const todo_left = document.createElement('div');
-        todo_left.classList.add('todo-right');
+        todo_left.classList.add('todo-left');
 
         const indicator_btn = document.createElement('button');
         todo_left.appendChild(indicator_btn);
@@ -110,6 +141,8 @@ export function content_container(project){
         const todo_date = document.createElement('div');
         todo_date.textContent = todo.getDueDate();
 
+
+
         const todo_priority = todo.getPriority();
         if (todo_priority == 'high'){
             indicator_btn.style.border = "3px solid red";
@@ -119,14 +152,34 @@ export function content_container(project){
             indicator_btn.style.border = "3px solid blue"
         }
 
+        
+        
+        const todo_delete = document.createElement('button');
+        todo_delete.textContent = "delete";
+        
+        todo_delete.addEventListener('click', () =>{
+            const content = document.querySelector('.content-container');
+            content.innerHTML = '';
+
+            project.deleteFromArr(todo);
+            content_container(project);
+            project.resetIndexes();
+        });
+
+
+        todo_right_side.appendChild(todo_delete);
+
         todo_right.appendChild(todo_title);
         todo_right.appendChild(todo_description);
         todo_right.appendChild(todo_date);
         
 
-        todo_container.appendChild(todo_left);
-        todo_container.appendChild(todo_right);
+        todo_left_side.appendChild(todo_left);
+        todo_left_side.appendChild(todo_right);
 
+        todo_container.appendChild(todo_left_side);
+        todo_container.appendChild(todo_right_side);
+        
 
         content_task_list.appendChild(todo_container);
 
@@ -134,8 +187,8 @@ export function content_container(project){
 
 
 
-    content_container.appendChild(content_header);
-    content_container.appendChild(content_task_list);
+    main_content_container.appendChild(content_header);
+    main_content_container.appendChild(content_task_list);
 }
 
 export function sidebar(){
@@ -171,12 +224,17 @@ export function sidebar(){
 
     const projectItem = new project(list_item.textContent);
     project_tabs.update_project_arr(projectItem);
+    
 
     const todoItem1 = new todo("default todo", "default description", "01/01", "high");
     projectItem.update_todo_arr(todoItem1);
+    todoItem1.setIndex(projectItem.arr_size()-1);
+    
 
     const todoItem2 = new todo("default todo 2", "default description 2", "02/02", "low");
     projectItem.update_todo_arr(todoItem2);
+    todoItem2.setIndex(projectItem.arr_size()-1);
+    
     
 
     list_item.addEventListener('click', () =>{

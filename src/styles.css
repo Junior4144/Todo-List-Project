@@ -184,15 +184,24 @@ form{
 .todo-container{
     background-color: burlywood;
     display:flex;
-    gap:10px;
+    justify-content: space-between;
+    align-items: center;
     padding:20px;
 }
-.todo-container button{
+.todo-left-side button{
     width:30px;
     height:30px;
     border-radius: 12px;
     border:none;
 }
-.todo-container button:hover{
+.todo-left-side button:hover{
     border: 1px solid lightgrey;
+}
+
+.todo-left-side{
+    display:flex;
+    gap:10px;
+}
+.todo-right-side button{
+    
 }

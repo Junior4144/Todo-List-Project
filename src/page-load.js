@@ -9,7 +9,6 @@ const project_tabs = (() => {
 
     const update_project_arr = (project) =>{
         projects_arr.push(project);
-        console.log(projects_arr);
         project.setIndex(getArrLength() -1);
     }
     const delete_project_arr = (project) =>{
@@ -55,7 +54,6 @@ function project(title){
 
     const update_todo_arr = (todo) => {
         todo_arr.push(todo);
-        console.log(todo_arr);
 
         todo.setIndex(arr_size()-1);
     }
@@ -305,7 +303,7 @@ export function sidebar(){
             else{
                 const content = document.querySelector('.content-container');
                 content.innerHTML = '';
-                
+
                 content_container(project_arr[project_arr.length-1]);
                 console.log(project_arr[project_arr.length-1].getTitle());
                 console.log("change");
@@ -326,15 +324,7 @@ export function sidebar(){
         list_item.appendChild(delete_item_btn);
         sidebar_list_container.appendChild(list_item);
     });
-
-
-
     
-    //project_tabs.update_project_arr(projectItem);
-
- 
-    
-
     main_sidebar.appendChild(sidebar_header_container);
     main_sidebar.appendChild(sidebar_list_container);
 }

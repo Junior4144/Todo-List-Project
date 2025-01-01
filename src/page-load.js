@@ -6,12 +6,12 @@ const project_tabs = (() => {
     //an array of projects
     let projects_arr = [];
 
-    const update_project = (project) =>{
+    const update_project_arr = (project) =>{
         projects_arr.push(project);
         console.log(projects_arr);
     }
     return{
-        update_project
+        update_project_arr
     }
 
 })();
@@ -22,16 +22,20 @@ function project(title){
 
     this.title = title;
 
-    const update_todo = (todo) => {
+    const update_todo_arr = (todo) => {
         todo_arr.push(todo);
         console.log(todo_arr);
     }
     const getTitle = () =>{
         return title;
     }
+    const getArr = () =>{
+        return todo_arr;
+    }
     return{
-        update_todo,
-        getTitle
+        update_todo_arr,
+        getTitle,
+        getArr
     }
 };
 
@@ -69,7 +73,7 @@ export function header(){
 
 export function content_container(project){
     const content_container = document.querySelector('.content-container');
-    
+    //header
     const content_header = document.createElement('div');
     content_header.classList.add('content-header');
 
@@ -80,6 +84,54 @@ export function content_container(project){
     header_title.textContent = project.getTitle();
 
     content_header.appendChild(header_title);
+
+    //content todo
+    const allTodo = project.getArr();
+
+    allTodo.forEach(todo => {
+        const todo_container = document.createElement('div');
+        todo_container.classList.add('todo-container')
+
+        const todo_left = document.createElement('div');
+        todo_left.classList.add('todo-right');
+
+        const indicator_btn = document.createElement('button');
+        todo_left.appendChild(indicator_btn);
+
+        const todo_right = document.createElement('div');
+        todo_right.classList.add('todo-right');
+
+        const todo_title = document.createElement('div');
+        todo_title.textContent = todo.getTitle();
+
+        const todo_description = document.createElement('div');
+        todo_description.textContent = todo.getDescription();
+
+        const todo_date = document.createElement('div');
+        todo_date.textContent = todo.getDueDate();
+
+        const todo_priority = todo.getPriority();
+        if (todo_priority == 'high'){
+            indicator_btn.style.border = "3px solid red";
+        }
+        else{
+            //todo_priority == low
+            indicator_btn.style.border = "3px solid blue"
+        }
+
+        todo_right.appendChild(todo_title);
+        todo_right.appendChild(todo_description);
+        todo_right.appendChild(todo_date);
+        
+
+        todo_container.appendChild(todo_left);
+        todo_container.appendChild(todo_right);
+
+
+        content_task_list.appendChild(todo_container);
+
+    });
+
 
 
     content_container.appendChild(content_header);
@@ -118,7 +170,13 @@ export function sidebar(){
     list_item.textContent = "Default Project";
 
     const projectItem = new project(list_item.textContent);
-    project_tabs.update_project(projectItem);
+    project_tabs.update_project_arr(projectItem);
+
+    const todoItem1 = new todo("default todo", "default description", "01/01", "high");
+    projectItem.update_todo_arr(todoItem1);
+
+    const todoItem2 = new todo("default todo 2", "default description 2", "02/02", "low");
+    projectItem.update_todo_arr(todoItem2);
     
 
     list_item.addEventListener('click', () =>{
@@ -204,7 +262,7 @@ function add_project_form(){
 
         list_container.appendChild(item);
 
-        project_tabs.update_project(projectItem);
+        project_tabs.update_project_arr(projectItem);
 
         body.removeChild(form_container);
 

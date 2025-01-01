@@ -172,12 +172,27 @@ form{
     display:flex;
     justify-content: flex-start;
     align-items: center;
-    
+
 }
 .content-task-list{
-
+    display:flex;
+    flex-direction: column;
+    gap:10px;
 }
 
-.task-item{
-
+/* todo */
+.todo-container{
+    background-color: burlywood;
+    display:flex;
+    gap:10px;
+    padding:20px;
+}
+.todo-container button{
+    width:30px;
+    height:30px;
+    border-radius: 12px;
+    border:none;
+}
+.todo-container button:hover{
+    border: 1px solid lightgrey;
 }

@@ -1,6 +1,8 @@
 import { format } from "date-fns";
 import { edit_task_form } from "./forms";
-
+import trashImg from "./assets/trash-can.svg"
+import empty_circle from "./assets/circle-outline.svg"
+import check_circle from "./assets/check-circle-outline.svg"
 //Contains DOM
 
 //create a factory
@@ -219,8 +221,27 @@ export function content_container(project){
         const todo_left = document.createElement('div');
         todo_left.classList.add('todo-left');
 
-        const indicator_btn = document.createElement('button');
+        const indicator_btn = document.createElement('img');
+        indicator_btn.src = empty_circle;
         todo_left.appendChild(indicator_btn);
+
+        indicator_btn.addEventListener('click', () =>{
+            indicator_btn.src = check_circle;
+            const content = document.querySelector('.content-container');
+            content.innerHTML = '';
+
+            project.deleteFromArr(todo);
+            content_container(project);
+            
+        });
+
+        indicator_btn.addEventListener('mouseover', () =>{
+            indicator_btn.src = check_circle;
+        });
+        indicator_btn.addEventListener('mouseleave', () =>{
+            indicator_btn.src = empty_circle;
+        });
+
 
         const todo_right = document.createElement('div');
         todo_right.classList.add('todo-right');
@@ -251,8 +272,8 @@ export function content_container(project){
 
         
         
-        const todo_delete = document.createElement('button');
-        todo_delete.textContent = "delete";
+        const todo_delete = document.createElement('img');
+        todo_delete.src = trashImg;
         
         todo_delete.addEventListener('click', () =>{
             const content = document.querySelector('.content-container');
@@ -342,8 +363,8 @@ export function sidebar(){
         const list_item_title = document.createElement('div');
         list_item_title.textContent = current_project.getTitle();
     
-        const delete_item_btn = document.createElement('button');
-        delete_item_btn.textContent = "delete";
+        const delete_item_btn = document.createElement('img');
+        delete_item_btn.src = trashImg;
 
         delete_item_btn.addEventListener('click', () =>{
 

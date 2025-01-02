@@ -62,6 +62,7 @@
     --ash-grey: #C2C5BB;
     --brown-sugar: #B4654A;
 }
+
 body{
     
     display:grid;
@@ -77,18 +78,21 @@ body{
 
     display: grid;
     grid-template-columns: 1fr 4fr;
+    
 }
 .header-left{
     background-color: var(--cambridge-green);
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 3rem;
+    font-size: 2.5rem;
     font-weight: 600;
+    min-width: 178.04px;
 }
 
 .header-right{
     background-color: var(--shamrock-green);
+    
 }
 
 /* SIDEBAR */
@@ -149,19 +153,15 @@ body{
     width: 84%;
     
 }
-.list-item  button{
-    font-size: .6rem;
-    width:30px;
-    height:15px;
-    border-radius: 8px;
-    border:none;
-    
-}
-.list-item  button:hover{
-    border: 1px solid red;
-    
-}
 
+.list-item img{
+    width: 30px;
+    height: 15px;
+
+}
+.list-item img:hover{
+    opacity: .5;
+}
 
 .list-container div{
     padding-left: 20px;
@@ -247,8 +247,17 @@ form{
 
     width:100%;
 }
+
+
 .todo-right{
     width:100%;
+}
+.todo-left img{
+    width:50px;
+    height:50px;
+    
+    border-radius: 50px;
+
 }
 
 .todo-left-side button{
@@ -257,6 +266,7 @@ form{
     border-radius: 12px;
     border:none;
 }
+
 .todo-left-side button:hover{
     border: 1px solid lightgrey;
 }
@@ -288,6 +298,18 @@ form{
 .add-todo-container:hover{
     filter: brightness(90%);
     border: .5px solid black;
+}
+
+.todo-right-side img{
+
+    width:50px;
+    height:50px;
+    
+}
+.todo-right-side img:hover{
+
+    opacity: .5;
+    
 }
 
 /* task form */

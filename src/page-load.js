@@ -174,7 +174,13 @@ export function todo(title, description, dueDate, priority){
     
 
 export function header(){
-    const header = document.querySelector('.header');
+    const header = document.querySelector('.header-left');
+    
+    const header_title = document.createElement('div');
+    header_title.classList.add('main_header_title')
+    header_title.textContent = "Todo-List"
+    header.appendChild(header_title);
+
 
 }
 

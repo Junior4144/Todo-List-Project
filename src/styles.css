@@ -224,6 +224,7 @@ form{
     gap:10px;
 }
 
+
 /* todo */
 .todo-container{
     background-color: var(--brown-sugar);
@@ -233,6 +234,14 @@ form{
     padding:20px;
     border-radius: 12px;
 }
+.todo-left-side{
+
+    width:100%;
+}
+.todo-right{
+    width:100%;
+}
+
 .todo-left-side button{
     width:30px;
     height:30px;
@@ -255,6 +264,20 @@ form{
 }
 .todo-right div:nth-child(3){
     font-size: 1rem;
+}
+
+.add-todo-container{
+    background-color: var(--brown-sugar);
+    width: 100px;
+    padding:10px;
+    border-radius: 12px;
+    display:flex;
+    justify-content: center;
+    align-items: center;
+    
+}
+.add-todo-container:hover{
+    filter: brightness(90%);
 }
 
 /* task form */

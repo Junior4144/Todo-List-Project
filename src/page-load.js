@@ -1,3 +1,5 @@
+import { format } from "date-fns";
+import { edit_task_form } from "./forms";
 
 //Contains DOM
 
@@ -33,6 +35,13 @@ const project_tabs = (() => {
 
     const defaultProject2 = new project("default project 2");
     update_project_arr(defaultProject2);
+
+    const todoItem1 = new todo("default todo", "default description", "2025-01-01", "high");
+    defaultProject.update_todo_arr(todoItem1);
+
+    const todoItem2 = new todo("default todo 2", "default description 2", "2025-02-02", "low");
+    defaultProject.update_todo_arr(todoItem2);
+  
     
 
     return{
@@ -62,6 +71,11 @@ function project(title){
         todo_arr.splice(todo.getIndex(), 1);
         resetIndexes();
     }
+    const deleteAndReplace = (todo, newTodo) => {
+        //add an index of location to each todo, with index splice from arr
+        todo_arr.splice(todo.getIndex(), 1, newTodo);
+        resetIndexes();
+    }
     const resetIndexes = () =>{
         for (let index = 0; index < todo_arr.length; index++) {
             todo_arr[index].setIndex(index);
@@ -84,14 +98,6 @@ function project(title){
     const getIndex = () =>{
         return this.index;
     }
-    const todoItem1 = new todo("default todo", "default description", "01/01", "high");
-    update_todo_arr(todoItem1);
-    
-    
-
-    const todoItem2 = new todo("default todo 2", "default description 2", "02/02", "low");
-    update_todo_arr(todoItem2);
-  
 
     return{
         update_todo_arr,
@@ -101,17 +107,23 @@ function project(title){
         arr_size,
         resetIndexes,
         setIndex,
-        getIndex
+        getIndex,
+        deleteAndReplace
     }
     
 };
 
-function todo(title, description, dueDate, priority){
+export function todo(title, description, dueDate, priority){
     this.title = title;
     this.description = description;
-    this.dueDate = dueDate;
     this.priority = priority;
     this.index = 0;
+
+    const arr1 = dueDate.split("-");
+
+    const date = new Date(arr1[2], arr1[2], arr1[0]); // dueDate MM-dd-yyyy
+    
+    this.dueDate = date;
     
     const getTitle = (() =>{
         return title;
@@ -131,13 +143,32 @@ function todo(title, description, dueDate, priority){
     const getIndex = () =>{
         return this.index;
     }
+
+    const setTitle = (title) =>{
+        this.title = title;
+    }
+    const setDescription = (description) =>{
+        this.description = description;
+    }
+    const setPriority = (priority) =>{
+        this.priority = priority;
+    }
+    const setDueDate = (dueDate) =>{
+        this.dueDate = dueDate;
+    }
+
     return {
         getTitle,
         getDescription,
         getDueDate,
         getPriority,
         setIndex,
-        getIndex
+        getIndex,
+        setTitle,
+        setDescription,
+        setPriority,
+        setTitle,
+        setDueDate
     }
 };
     
@@ -157,6 +188,8 @@ export function content_container(project){
     const content_task_list = document.createElement('div');
     content_task_list.classList.add('content-task-list');
 
+
+
     const header_title = document.createElement('div');
     header_title.classList.add('header-title');
     header_title.textContent = project.getTitle();
@@ -167,6 +200,8 @@ export function content_container(project){
     const allTodo = project.getArr();
 
     allTodo.forEach(todo => {
+        
+
         const todo_container = document.createElement('div');
         todo_container.classList.add('todo-container')
 
@@ -184,6 +219,10 @@ export function content_container(project){
         const todo_right = document.createElement('div');
         todo_right.classList.add('todo-right');
 
+        todo_right.addEventListener('click', () =>{
+            edit_task_form(todo, project);
+        });
+
         const todo_title = document.createElement('div');
         todo_title.textContent = todo.getTitle();
 
@@ -196,11 +235,11 @@ export function content_container(project){
 
 
         const todo_priority = todo.getPriority();
-        if (todo_priority == 'high'){
+
+        if (todo_priority.toLowerCase() == 'high'){
             indicator_btn.style.border = "3px solid red";
         }
-        else{
-            //todo_priority == low
+        else if(todo_priority.toLowerCase() == 'low'){
             indicator_btn.style.border = "3px solid blue"
         }
 
@@ -239,7 +278,7 @@ export function content_container(project){
     add_task_container.classList.add('add-todo-container');
     
     const add_task_title = document.createElement('div');
-    add_task_title.textContent = "add task";
+    add_task_title.textContent = "+ add task";
 
     add_task_container.addEventListener('click', () =>{
         add_task_form(project);
@@ -447,6 +486,7 @@ function add_project_form(){
     const cancel_project_btn = document.createElement('button');
     cancel_project_btn.classList.add('cancel-btn');
     cancel_project_btn.classList.add('project-btn');
+    cancel_project_btn.type = 'button';
     cancel_project_btn.textContent = 'cancel';
 
     cancel_project_btn.addEventListener('click', (event) =>{
@@ -520,6 +560,9 @@ function add_task_form(current_project){
 
     const task_dueDate_input = document.createElement('input')
     task_dueDate_input.id = "task-dueDate";
+    task_dueDate_input.placeholder = "yyyy-MM-dd";
+
+
 
     //priority
     const tasks_priority_label = document.createElement('label');
@@ -528,6 +571,8 @@ function add_task_form(current_project){
 
     const task_priority_input = document.createElement('input')
     task_priority_input.id = "task-priority";
+    task_priority_input.placeholder = "low | high";
+
 
     
 

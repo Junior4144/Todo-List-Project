@@ -4,6 +4,7 @@ import trashImg from "./assets/trash-can.svg"
 import empty_circle from "./assets/circle-outline.svg"
 import check_circle from "./assets/check-circle-outline.svg"
 
+
 //Contains DOM
 
 //create a factory - IIEF
@@ -46,7 +47,7 @@ const project_tabs = (() => {
     defaultProject.update_todo_arr(todoItem2);
   
     
-
+    
     return{
         update_project_arr,
         delete_project_arr,
@@ -195,7 +196,8 @@ export function header(){
 }
 
 export function content_container(project){
-
+    
+    console.log(project.getTitle() + " current project");
     const main_content_container = document.querySelector('.content-container');
     //header
     const content_header = document.createElement('div');
@@ -394,10 +396,11 @@ export function sidebar(){
                 const content = document.querySelector('.content-container');
                 if(!content.innerHTML == ''){
                     content.innerHTML = '';
-
-                    content_container(project_arr[project_arr.length-1]);
-                    console.log(project_arr[project_arr.length-1].getTitle());
                     console.log("change");
+                    //console.log(project_arr[project_arr.length-1]);
+                    content_container(project_arr[project_arr.length-1]);
+                    //console.log(project_arr[project_arr.length-1].getTitle());
+                    
                 }
  
             }
@@ -476,6 +479,7 @@ function add_project_form(){
 
         const projectItem = new project(form_details.value);
         project_tabs.update_project_arr(projectItem);
+        
 
         const list_container = document.querySelector('.list-container');
         
@@ -485,19 +489,43 @@ function add_project_form(){
         const list_item_title = document.createElement('div');
         list_item_title.textContent = projectItem.getTitle();
     
-        const delete_item_btn = document.createElement('button');
-        delete_item_btn.textContent = "delete";
+        const delete_item_btn = document.createElement('img');
+        delete_item_btn.src = trashImg;
+        
 
         delete_item_btn.addEventListener('click', () =>{
             const main_sidebar = document.querySelector('.sidebar');
             main_sidebar.innerHTML = '';
+
+
             
             project_tabs.delete_project_arr(projectItem);
+            
             sidebar();
+            
+            const project_arr = project_tabs.getArr();
+            
+            
+            if (project_arr.length < 1){
+                const temp_content = document.querySelector('.content-container');
+                temp_content.innerHTML = '';
+
+            }
+            else{
+                const main_content = document.querySelector('.content-container');
+        
+                main_content.innerHTML = '';
+                //console.log(project_arr);
+                console.log(project_arr[project_arr.length-1].getTitle());
+                content_container(project_arr[project_arr.length - 1]);
+                //////// console.log(project_arr[project_arr.length-1].getTitle());
+                
+ 
+            }
         });
 
 
-        list_item.addEventListener('click', () =>{
+        list_item_title.addEventListener('click', () =>{
             const content = document.querySelector('.content-container');
             content.innerHTML = '';
             

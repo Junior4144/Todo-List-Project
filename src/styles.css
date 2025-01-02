@@ -55,6 +55,13 @@
     font-family: 'Roboto', sans-serif;
 
 }
+:root{
+    --pine-green: #157A6E;
+    --shamrock-green: #499F68;
+    --cambridge-green: #77B28C;
+    --ash-grey: #C2C5BB;
+    --brown-sugar: #B4654A;
+}
 body{
     
     display:grid;
@@ -64,15 +71,24 @@ body{
     "header header"
     "sidebar content-container";
 }
+/* header  */
 .header{
     grid-area: header;
-    background-color: darkcyan;
+
+    display: grid;
+    grid-template-columns: 1fr 4fr;
+}
+.header-left{
+    background-color: var(--cambridge-green);
 }
 
+.header-right{
+    background-color: var(--shamrock-green);
+}
 /* SIDEBAR */
 .sidebar{
     grid-area: sidebar;
-    background-color: grey;
+    background-color: var(--cambridge-green);
 
     padding:30px;
     display:flex;
@@ -87,10 +103,11 @@ body{
     display:flex;
     justify-content: space-between;
     align-items: center;
+    background-color: var(--cambridge-green);
 
 }
 .sidebar-header-container:hover{
-   background-color: darkgrey;
+   filter: brightness(90%);
 }
 
 .sidebar_add{
@@ -102,10 +119,11 @@ body{
     display:flex;
     justify-content: center;
     align-items: center;
+    
 }
 .sidebar_add:hover{
     
-    background-color: darkgrey;
+    filter: brightness(90%);
 }
 
 
@@ -119,6 +137,11 @@ body{
     display: flex;
     justify-content: space-between;
     align-items: center;
+    background-color: var(--cambridge-green);
+}
+.list-item div{
+    width: 84%;
+    
 }
 .list-item  button{
     font-size: .6rem;
@@ -138,7 +161,7 @@ body{
     padding-left: 20px;
 }
 .list-container div:hover{
-    background-color: darkgrey;
+    filter: brightness(90%);
 }
 
  /* Form */
@@ -181,7 +204,7 @@ form{
 /* CONTENT */
 .content-container{
     grid-area: content-container;
-    background-color: lightblue;
+    background-color: var(--shamrock-green);
     
     padding: 20px;  
     display: grid;
@@ -203,11 +226,12 @@ form{
 
 /* todo */
 .todo-container{
-    background-color: burlywood;
+    background-color: var(--brown-sugar);
     display:flex;
     justify-content: space-between;
     align-items: center;
     padding:20px;
+    border-radius: 12px;
 }
 .todo-left-side button{
     width:30px;
@@ -223,6 +247,12 @@ form{
     display:flex;
     gap:10px;
 }
-.todo-right-side button{
-    
+.todo-right div:nth-child(1){
+    font-size: 1.5rem;
+}
+.todo-right div:nth-child(2){
+    font-size: 1rem;
+}
+.todo-right div:nth-child(3){
+    font-size: 1rem;
 }

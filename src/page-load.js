@@ -149,7 +149,6 @@ export function header(){
 
 export function content_container(project){
 
-
     const main_content_container = document.querySelector('.content-container');
     //header
     const content_header = document.createElement('div');
@@ -301,12 +300,16 @@ export function sidebar(){
                 temp_content.innerHTML = '';
             }
             else{
+                
                 const content = document.querySelector('.content-container');
-                content.innerHTML = '';
+                if(!content.innerHTML == ''){
+                    content.innerHTML = '';
 
-                content_container(project_arr[project_arr.length-1]);
-                console.log(project_arr[project_arr.length-1].getTitle());
-                console.log("change");
+                    content_container(project_arr[project_arr.length-1]);
+                    console.log(project_arr[project_arr.length-1].getTitle());
+                    console.log("change");
+                }
+ 
             }
             
             

@@ -1,7 +1,8 @@
 import "./styles.css"
-import {header, sidebar, content_container} from "../src/page-load.js"
+import {header, sidebar, content_container, project_tabs, retrieveData} from "../src/page-load.js"
 
 
 
 sidebar();
 header();
+retrieveData('project');

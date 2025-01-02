@@ -7,8 +7,7 @@ import check_circle from "./assets/check-circle-outline.svg"
 
 //Contains DOM
 
-//create a factory - IIEF
-const project_tabs = (() => { 
+const project_tabs = ( () => { 
     //an array of projects
     let projects_arr = [];
 
@@ -40,12 +39,37 @@ const project_tabs = (() => {
     const defaultProject2 = new project("default project 2");
     update_project_arr(defaultProject2);
 
+    saveProject("Project: default project", JSON.stringify("default project"));
+    saveProject("Project: default project 2", JSON.stringify("default project 2"));
+
     const todoItem1 = new todo("default todo", "default description", "2025-01-01", "high");
     defaultProject.update_todo_arr(todoItem1);
 
     const todoItem2 = new todo("default todo 2", "default description 2", "2025-02-02", "low");
     defaultProject.update_todo_arr(todoItem2);
-  
+
+    let temp = []
+    temp.push("default todo");
+    temp.push("default description");
+    temp.push("2025-01-01");
+    temp.push("high");
+    localStorage.setItem(`Todo: default project`, JSON.stringify([]));
+    const cur = JSON.parse(localStorage.getItem(`Todo: default project`));
+    cur.push(temp);
+    localStorage.setItem(`Todo: default project`, JSON.stringify(cur));
+
+    let temp2 = []
+    temp2.push("default todo 2");
+    temp2.push("default description 2");
+    temp2.push("2025-02-02");
+    temp2.push("low");
+    
+    const old = JSON.parse(localStorage.getItem(`Todo: default project`));
+    // saveProject(`Todo: default project`, JSON.stringify(old + temp2));
+    console.log(old);
+    old.push(temp2);
+
+    localStorage.setItem(`Todo: default project`, JSON.stringify(old));
     
     
     return{
@@ -205,8 +229,6 @@ export function content_container(project){
 
     const content_task_list = document.createElement('div');
     content_task_list.classList.add('content-task-list');
-
-
 
     const header_title = document.createElement('div');
     header_title.classList.add('header-title');
@@ -479,7 +501,15 @@ function add_project_form(){
 
         const projectItem = new project(form_details.value);
         project_tabs.update_project_arr(projectItem);
+
+        //for project, cant have same name 
+       
+      
+        saveProject(`Project: ${form_details.value}`, JSON.stringify(form_details.value));
+       
         
+        
+
 
         const list_container = document.querySelector('.list-container');
         
@@ -686,8 +716,6 @@ function add_task_form(current_project){
     submit_task_btn.addEventListener('click', (event) =>{
 
         
-       
-
         const form_container = document.querySelector('.form-container');
         body.style.position = 'static';
         
@@ -696,6 +724,22 @@ function add_task_form(current_project){
         const form_description = document.getElementById('task-description').value;
         const form_dueDate = document.getElementById('task-dueDate').value;
         const form_priority = document.getElementById('task-priority').value;
+
+        let temp = []
+        temp.push(form_name);
+        temp.push(form_description);
+        temp.push(form_dueDate);
+        temp.push(form_priority);
+       //  saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify(temp));
+
+        if(localStorage.getItem(`Todo: ${current_project.getTitle()}`) != null){
+            const old = localStorage.getItem(`Todo: ${current_project.getTitle()}`)
+            saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify( old + temp));
+
+        }else{
+            
+            saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify(temp));
+        }
         
         if (form_dueDate ==''){
             event.preventDefault();
@@ -744,4 +788,25 @@ function add_task_form(current_project){
     task_form.appendChild(task_btn_container);
     form_container.appendChild(task_form)
     body.appendChild(form_container);
+}
+
+
+
+function saveProject(key, data){
+    localStorage.setItem(key, data);
+}   
+
+export function retrieveData(key){
+    //load page with specific data
+    console.log(localStorage.getItem(key));
+    const x = JSON.parse(localStorage.getItem(key));
+    
+
+    // const tempObject = new project(x);
+
+    // const main_sidebar = document.querySelector('.sidebar');
+    // main_sidebar.innerHTML = '';
+
+    
+    
 }

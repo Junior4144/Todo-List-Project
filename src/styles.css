@@ -87,7 +87,7 @@ body{
     align-items: center;
     font-size: 2.5rem;
     font-weight: 600;
-    min-width: 178.04px;
+    min-width: 244px;
 }
 
 .header-right{
@@ -104,6 +104,7 @@ body{
     display:flex;
     flex-direction: column;
     gap:10px;
+    min-width: 244px;
 
 }
 .sidebar-header-container{
@@ -239,6 +240,7 @@ form{
     align-items: center;
     padding:20px;
     border-radius: 12px;
+    min-width: 287px;
 }
 .todo-container:hover{
     border: .5px solid black;

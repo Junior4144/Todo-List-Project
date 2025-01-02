@@ -6,7 +6,7 @@ import check_circle from "./assets/check-circle-outline.svg"
 
 //Contains DOM
 
-//create a factory
+//create a factory - IIEF
 const project_tabs = (() => { 
     //an array of projects
     let projects_arr = [];

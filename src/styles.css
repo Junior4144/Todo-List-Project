@@ -256,3 +256,11 @@ form{
 .todo-right div:nth-child(3){
     font-size: 1rem;
 }
+
+/* task form */
+
+.task-details-container{
+    display:flex;
+    flex-direction: column;
+    gap:10px;
+}

@@ -50,7 +50,9 @@ export function edit_task_form(todo, project) {
     const task_dueDate_input = document.createElement('input')
     task_dueDate_input.id = "task-dueDate";
     task_dueDate_input.placeholder = "yyyy-MM-dd";
-    task_dueDate_input.value = todo.getDueDate();
+    task_dueDate_input.type = 'date';
+    task_dueDate_input.required = true;
+    task_dueDate_input.value = todo.getRawDueDate();
 
 
 
@@ -61,10 +63,29 @@ export function edit_task_form(todo, project) {
 
     const task_priority_input = document.createElement('input')
     task_priority_input.id = "task-priority";
-    task_priority_input.placeholder = "low | high";
+    task_priority_input.placeholder = "low | high | none";
     task_priority_input.value = todo.getPriority();
+    task_priority_input.setAttribute('list', 'task-priority-types');
+
+    const task_priority_input_datalist = document.createElement('DATALIST');
+    task_priority_input_datalist.id = 'task-priority-types';
+
+    
+    const priority_High = document.createElement('option');
+    priority_High.textContent = 'High';
+
+    const priority_Low = document.createElement('option');
+    priority_Low.textContent = 'Low';
+
+    const priority_None = document.createElement('option');
+    priority_None.textContent = 'None';
+
+    task_priority_input_datalist.appendChild(priority_High);
+    task_priority_input_datalist.appendChild(priority_Low);
+    task_priority_input_datalist.appendChild(priority_None);
 
 
+   
     
 
     task_details_container.appendChild(tasks_name_label);
@@ -78,6 +99,7 @@ export function edit_task_form(todo, project) {
     
     task_details_container.appendChild(tasks_priority_label);
     task_details_container.appendChild(task_priority_input);
+    task_details_container.appendChild(task_priority_input_datalist);
 
 
     

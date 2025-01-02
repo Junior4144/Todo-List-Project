@@ -3,6 +3,7 @@ import { edit_task_form } from "./forms";
 import trashImg from "./assets/trash-can.svg"
 import empty_circle from "./assets/circle-outline.svg"
 import check_circle from "./assets/check-circle-outline.svg"
+
 //Contains DOM
 
 //create a factory
@@ -120,24 +121,29 @@ export function todo(title, description, dueDate, priority){
     this.description = description;
     this.priority = priority;
     this.index = 0;
-
+    this.rawDueDate = dueDate;
     const arr1 = dueDate.split("-");
 
-    const date = new Date(arr1[2], arr1[2], arr1[0]); // dueDate MM-dd-yyyy
-    
-    this.dueDate = date;
+    const date = new Date(arr1[0],arr1[1],arr1[2]); // dueDate MM-dd-yyyy
+    console.log(date)
+    this.dueDate = format(date, "MM/dd/yyyy");
     
     const getTitle = (() =>{
-        return title;
+        return this.title;
     });
     const getDescription = (() =>{
-        return description;
+        return this.description;
     });
     const getDueDate = (() =>{
-        return dueDate;
+        
+        return this.dueDate;
+    });
+    const getRawDueDate = (() =>{
+        
+        return this.rawDueDate;
     });
     const getPriority = (() =>{
-        return priority;
+        return this.priority;
     });
     const setIndex = ((index) =>{
         this.index = index;
@@ -156,6 +162,7 @@ export function todo(title, description, dueDate, priority){
         this.priority = priority;
     }
     const setDueDate = (dueDate) =>{
+        
         this.dueDate = dueDate;
     }
 
@@ -170,7 +177,8 @@ export function todo(title, description, dueDate, priority){
         setDescription,
         setPriority,
         setTitle,
-        setDueDate
+        setDueDate,
+        getRawDueDate
     }
 };
     
@@ -588,6 +596,8 @@ function add_task_form(current_project){
     const task_dueDate_input = document.createElement('input')
     task_dueDate_input.id = "task-dueDate";
     task_dueDate_input.placeholder = "yyyy-MM-dd";
+    task_dueDate_input.type = 'date';
+    task_dueDate_input.required = true;
 
 
 
@@ -598,8 +608,25 @@ function add_task_form(current_project){
 
     const task_priority_input = document.createElement('input')
     task_priority_input.id = "task-priority";
-    task_priority_input.placeholder = "low | high";
+    task_priority_input.placeholder = "low | high | none";
+    task_priority_input.setAttribute('list', 'task-priority-types');
 
+    const task_priority_input_datalist = document.createElement('DATALIST');
+    task_priority_input_datalist.id = 'task-priority-types';
+
+    
+    const priority_High = document.createElement('option');
+    priority_High.textContent = 'High';
+
+    const priority_Low = document.createElement('option');
+    priority_Low.textContent = 'Low';
+
+    const priority_None = document.createElement('option');
+    priority_None.textContent = 'None';
+
+    task_priority_input_datalist.appendChild(priority_High);
+    task_priority_input_datalist.appendChild(priority_Low);
+    task_priority_input_datalist.appendChild(priority_None);
 
     
 
@@ -629,7 +656,9 @@ function add_task_form(current_project){
     
     
     submit_task_btn.addEventListener('click', (event) =>{
-        event.preventDefault();
+
+        
+       
 
         const form_container = document.querySelector('.form-container');
         body.style.position = 'static';
@@ -640,19 +669,25 @@ function add_task_form(current_project){
         const form_dueDate = document.getElementById('task-dueDate').value;
         const form_priority = document.getElementById('task-priority').value;
         
-
-        const taskItem = new todo(form_name, form_description, form_dueDate, form_priority);
-    
-        current_project.update_todo_arr(taskItem);
-        console.log(current_project.getArr());
-
-        const main_content = document.querySelector('.content-container')
-        main_content.innerHTML = '';
-        content_container(current_project);
-
+        if (form_dueDate ==''){
+            event.preventDefault();
+        }
+        else{
+            event.preventDefault();
+            const taskItem = new todo(form_name, form_description, form_dueDate, form_priority);
         
+            current_project.update_todo_arr(taskItem);
+            console.log(current_project.getArr());
 
-        body.removeChild(form_container);
+            const main_content = document.querySelector('.content-container')
+            main_content.innerHTML = '';
+            content_container(current_project);
+
+            
+
+            body.removeChild(form_container);
+        }
+        
 
         
     });

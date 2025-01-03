@@ -24,6 +24,20 @@ const project_tabs = ( () => {
         return check;
         
     }
+    const getProjectBasedOnName = (title) =>{
+        let correct_project = null;
+        projects_arr.forEach(element => {
+            
+
+            if(element.getTitle() == title){
+                correct_project = element
+                return correct_project;
+            }
+        });
+        return correct_project;
+        
+        
+    }
 
     const update_project_arr = (project) =>{
         projects_arr.push(project);
@@ -106,7 +120,8 @@ const project_tabs = ( () => {
         resetIndexes,
         getArr,
         getArrLength,
-        titleMap
+        titleMap,
+        getProjectBasedOnName
     }
 
 })();
@@ -179,7 +194,7 @@ export function todo(title, description, dueDate, priority){
     const arr1 = dueDate.split("-");
 
     const date = new Date(arr1[0],arr1[1],arr1[2]); // dueDate MM-dd-yyyy
-    console.log(date)
+    console.log(date);
     this.dueDate = format(date, "MM/dd/yyyy");
     
     const getTitle = (() =>{
@@ -841,7 +856,7 @@ export  function loadLocalData() {
 
     //projects
     const project_arr = JSON.parse(localStorage.getItem('project'));
-    console.log(project_arr);
+    //console.log(project_arr);
 
 
     for(let i = 2; i < project_arr.length; i++){
@@ -854,6 +869,44 @@ export  function loadLocalData() {
     sidebar();
 
     //todos
+    //some how get all keys and figure out if they are `todos`
+
+    for(let i = 0; i < localStorage.length; i++){
+        //all after project are todos
+        //console.log(localStorage.key(i));
+
+
+        if(!localStorage.key(i).indexOf('p') == 0){
+            const project_name = localStorage.key(i);
+            console.log(project_name);
+            const pName = localStorage.key(i).substring(6);
+            const todo_data = JSON.parse(localStorage.getItem(project_name));
+            //console.log(todo_data);
+            let counter = 0
+            todo_data.forEach(element => {
+                
+                if(project_name == "Todo: default project" && counter < 2){
+                    counter++;
+                }
+                else{
+                    const title = element[0];
+                    const description = element[1];
+                    const dueDate = element[2];
+                    const priority = element[3];
+        
+                    const cur_todo = new todo(title, description, dueDate, priority);
+                    //locate correct project with project_name
+
+
+                    const current_project = project_tabs.getProjectBasedOnName(pName);
+                    current_project.update_todo_arr(cur_todo);
+                }
+                
+            });
+            
+        }
+    }
+
 
     
 };

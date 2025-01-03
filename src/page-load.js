@@ -10,7 +10,20 @@ import check_circle from "./assets/check-circle-outline.svg"
 const project_tabs = ( () => { 
     //an array of projects
     let projects_arr = [];
-
+    
+    const titleMap = (checkTitle) =>{
+        let check = false;
+        projects_arr.forEach(element => {
+            console.log(element.getTitle());
+            if(element.getTitle() == checkTitle){
+                console.log("outcome true")
+                check = true;
+                return check;
+            }
+        });
+        return check;
+        
+    }
 
     const update_project_arr = (project) =>{
         projects_arr.push(project);
@@ -77,7 +90,8 @@ const project_tabs = ( () => {
         delete_project_arr,
         resetIndexes,
         getArr,
-        getArrLength
+        getArrLength,
+        titleMap
     }
 
 })();
@@ -491,87 +505,99 @@ function add_project_form(){
     
     
     submit_project_btn.addEventListener('click', (event) =>{
-        event.preventDefault();
-
-        const form_container = document.querySelector('.form-container');
-        body.style.position = 'static';
         
+        console.log(`checker: ${project_details_input.value}`)
+        console.log(project_tabs.titleMap(project_details_input.value));
 
-        const form_details = document.getElementById('project-details');
+        if((project_tabs.titleMap(project_details_input.value) == true) || project_details_input.value == ''){
+            event.preventDefault();
 
-        const projectItem = new project(form_details.value);
-        project_tabs.update_project_arr(projectItem);
-
-        //for project, cant have same name 
-       
-      
-        saveProject(`Project: ${form_details.value}`, JSON.stringify(form_details.value));
-       
-        
-        
-
-
-        const list_container = document.querySelector('.list-container');
-        
-        const list_item = document.createElement('div');
-        list_item.classList.add("list-item");
-
-        const list_item_title = document.createElement('div');
-        list_item_title.textContent = projectItem.getTitle();
+        }
+        else{
+            event.preventDefault();
+            const form_container = document.querySelector('.form-container');
+            body.style.position = 'static';
+            
     
-        const delete_item_btn = document.createElement('img');
-        delete_item_btn.src = trashImg;
+            const form_details = document.getElementById('project-details');
+    
+            const projectItem = new project(form_details.value);
+            project_tabs.update_project_arr(projectItem);
+    
+            //for project, cant have same name 
+           
+          
+            //saveProject(`Project: ${form_details.value}`, JSON.stringify(form_details.value));
+            localStorage.setItem(`Project: ${form_details.value}`, `Project: ${form_details.value}`);
+    
+            //prevent doubles
+            
+    
+    
+            const list_container = document.querySelector('.list-container');
+            
+            const list_item = document.createElement('div');
+            list_item.classList.add("list-item");
+    
+            const list_item_title = document.createElement('div');
+            list_item_title.textContent = projectItem.getTitle();
         
-
-        delete_item_btn.addEventListener('click', () =>{
-            const main_sidebar = document.querySelector('.sidebar');
-            main_sidebar.innerHTML = '';
-
-
+            const delete_item_btn = document.createElement('img');
+            delete_item_btn.src = trashImg;
             
-            project_tabs.delete_project_arr(projectItem);
-            
-            sidebar();
-            
-            const project_arr = project_tabs.getArr();
-            
-            
-            if (project_arr.length < 1){
-                const temp_content = document.querySelector('.content-container');
-                temp_content.innerHTML = '';
-
-            }
-            else{
-                const main_content = document.querySelector('.content-container');
-        
-                main_content.innerHTML = '';
-                //console.log(project_arr);
-                console.log(project_arr[project_arr.length-1].getTitle());
-                content_container(project_arr[project_arr.length - 1]);
-                //////// console.log(project_arr[project_arr.length-1].getTitle());
+    
+            delete_item_btn.addEventListener('click', () =>{
+                const main_sidebar = document.querySelector('.sidebar');
+                main_sidebar.innerHTML = '';
+    
+    
                 
- 
-            }
-        });
-
-
-        list_item_title.addEventListener('click', () =>{
-            const content = document.querySelector('.content-container');
-            content.innerHTML = '';
-            
-            content_container(projectItem);
+                project_tabs.delete_project_arr(projectItem);
+                
+                sidebar();
+                
+                const project_arr = project_tabs.getArr();
+                
+                
+                if (project_arr.length < 1){
+                    const temp_content = document.querySelector('.content-container');
+                    temp_content.innerHTML = '';
     
-        });
-
-        list_item.appendChild(list_item_title);
-        list_item.appendChild(delete_item_btn);
-
-        list_container.appendChild(list_item);
-
+                }
+                else{
+                    const main_content = document.querySelector('.content-container');
+            
+                    main_content.innerHTML = '';
+                    //console.log(project_arr);
+                    console.log(project_arr[project_arr.length-1].getTitle());
+                    content_container(project_arr[project_arr.length - 1]);
+                    //////// console.log(project_arr[project_arr.length-1].getTitle());
+                    
+     
+                }
+            });
+    
+    
+            list_item_title.addEventListener('click', () =>{
+                const content = document.querySelector('.content-container');
+                content.innerHTML = '';
+                
+                content_container(projectItem);
         
+            });
+    
+            list_item.appendChild(list_item_title);
+            list_item.appendChild(delete_item_btn);
+    
+            list_container.appendChild(list_item);
+    
+            
+    
+            body.removeChild(form_container);
+    
+        }
 
-        body.removeChild(form_container);
-
+       
         
     });
 
@@ -716,8 +742,7 @@ function add_task_form(current_project){
     submit_task_btn.addEventListener('click', (event) =>{
 
         
-        const form_container = document.querySelector('.form-container');
-        body.style.position = 'static';
+
         
 
         const form_name = document.getElementById('task-name').value;
@@ -758,7 +783,11 @@ function add_task_form(current_project){
             
 
             body.removeChild(form_container);
+            const form_container = document.querySelector('.form-container');
+            body.style.position = 'static';
         }
+
+        
         
 
         

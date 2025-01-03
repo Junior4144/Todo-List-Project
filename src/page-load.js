@@ -52,8 +52,19 @@ const project_tabs = ( () => {
     const defaultProject2 = new project("default project 2");
     update_project_arr(defaultProject2);
 
-    saveProject("Project: default project", JSON.stringify("default project"));
-    saveProject("Project: default project 2", JSON.stringify("default project 2"));
+    if(localStorage.getItem('project') == null){
+        localStorage.setItem('project', JSON.stringify([]));
+
+        const temp_arr = JSON.parse(localStorage.getItem('project'));
+        temp_arr.push("default project");
+        temp_arr.push("default project 2");
+    
+        localStorage.setItem('project', JSON.stringify(temp_arr));
+        
+    
+    }
+    
+
 
     const todoItem1 = new todo("default todo", "default description", "2025-01-01", "high");
     defaultProject.update_todo_arr(todoItem1);
@@ -66,23 +77,27 @@ const project_tabs = ( () => {
     temp.push("default description");
     temp.push("2025-01-01");
     temp.push("high");
-    localStorage.setItem(`Todo: default project`, JSON.stringify([]));
-    const cur = JSON.parse(localStorage.getItem(`Todo: default project`));
-    cur.push(temp);
-    localStorage.setItem(`Todo: default project`, JSON.stringify(cur));
 
-    let temp2 = []
-    temp2.push("default todo 2");
-    temp2.push("default description 2");
-    temp2.push("2025-02-02");
-    temp2.push("low");
+    if(localStorage.getItem(`Todo: default project`) == null){
+
+        localStorage.setItem(`Todo: default project`, JSON.stringify([]));
+        const cur = JSON.parse(localStorage.getItem(`Todo: default project`));
+        cur.push(temp);
+        localStorage.setItem(`Todo: default project`, JSON.stringify(cur));
     
-    const old = JSON.parse(localStorage.getItem(`Todo: default project`));
-    // saveProject(`Todo: default project`, JSON.stringify(old + temp2));
-    console.log(old);
-    old.push(temp2);
+        let temp2 = []
+        temp2.push("default todo 2");
+        temp2.push("default description 2");
+        temp2.push("2025-02-02");
+        temp2.push("low");
+        
+        const old = JSON.parse(localStorage.getItem(`Todo: default project`));
+    
+        old.push(temp2);
+    
+        localStorage.setItem(`Todo: default project`, JSON.stringify(old));
+    }
 
-    localStorage.setItem(`Todo: default project`, JSON.stringify(old));
     
     
     return{
@@ -524,15 +539,11 @@ function add_project_form(){
             const projectItem = new project(form_details.value);
             project_tabs.update_project_arr(projectItem);
     
-            //for project, cant have same name 
-           
-          
-            //saveProject(`Project: ${form_details.value}`, JSON.stringify(form_details.value));
-            localStorage.setItem(`Project: ${form_details.value}`, `Project: ${form_details.value}`);
-    
-            //prevent doubles
-            
-    
+            //local storage implementation
+            const arr = JSON.parse(localStorage.getItem('project'));
+            arr.push(form_details.value);
+
+            localStorage.setItem('project', JSON.stringify(arr))
     
             const list_container = document.querySelector('.list-container');
             
@@ -568,12 +579,9 @@ function add_project_form(){
                     const main_content = document.querySelector('.content-container');
             
                     main_content.innerHTML = '';
-                    //console.log(project_arr);
-                    console.log(project_arr[project_arr.length-1].getTitle());
+  
                     content_container(project_arr[project_arr.length - 1]);
-                    //////// console.log(project_arr[project_arr.length-1].getTitle());
-                    
-     
+
                 }
             });
     
@@ -740,50 +748,51 @@ function add_task_form(current_project){
     
     
     submit_task_btn.addEventListener('click', (event) =>{
+        event.preventDefault();
 
-        
-
-        
-
-        const form_name = document.getElementById('task-name').value;
-        const form_description = document.getElementById('task-description').value;
-        const form_dueDate = document.getElementById('task-dueDate').value;
-        const form_priority = document.getElementById('task-priority').value;
-
-        let temp = []
-        temp.push(form_name);
-        temp.push(form_description);
-        temp.push(form_dueDate);
-        temp.push(form_priority);
-       //  saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify(temp));
-
-        if(localStorage.getItem(`Todo: ${current_project.getTitle()}`) != null){
-            const old = localStorage.getItem(`Todo: ${current_project.getTitle()}`)
-            saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify( old + temp));
-
-        }else{
-            
-            saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify(temp));
-        }
-        
+        const form_dueDate = task_dueDate_input.value;
         if (form_dueDate ==''){
             event.preventDefault();
         }
         else{
             event.preventDefault();
+            const form_container = document.querySelector('.form-container');
+
+            const form_name = document.getElementById('task-name').value;
+            const form_description = document.getElementById('task-description').value;
+            const form_dueDate = document.getElementById('task-dueDate').value;
+            const form_priority = document.getElementById('task-priority').value;
+    
+            let temp = []
+            temp.push(form_name);
+            temp.push(form_description);
+            temp.push(form_dueDate);
+            temp.push(form_priority);
+           //  saveProject(`Todo: ${current_project.getTitle()}`, JSON.stringify(temp));
+            //add []
+            //take out then append
+            //re add []
+
+            if (localStorage.getItem(`Todo: ${current_project.getTitle()}`) == null){
+                localStorage.setItem(`Todo: ${current_project.getTitle()}`, JSON.stringify([]));
+            }
+
+            const arr1 = JSON.parse(localStorage.getItem(`Todo: ${current_project.getTitle()}`));
+            arr1.push(temp);
+
+            localStorage.setItem(`Todo: ${current_project.getTitle()}`, JSON.stringify(arr1));
+
             const taskItem = new todo(form_name, form_description, form_dueDate, form_priority);
         
             current_project.update_todo_arr(taskItem);
-            console.log(current_project.getArr());
 
             const main_content = document.querySelector('.content-container')
             main_content.innerHTML = '';
             content_container(current_project);
 
-            
-
             body.removeChild(form_container);
-            const form_container = document.querySelector('.form-container');
+
+            
             body.style.position = 'static';
         }
 
@@ -825,17 +834,26 @@ function saveProject(key, data){
     localStorage.setItem(key, data);
 }   
 
-export function retrieveData(key){
-    //load page with specific data
-    console.log(localStorage.getItem(key));
-    const x = JSON.parse(localStorage.getItem(key));
-    
+export  function loadLocalData() {
 
-    // const tempObject = new project(x);
+    //first create all projects 
+    //then add todo to them
 
-    // const main_sidebar = document.querySelector('.sidebar');
-    // main_sidebar.innerHTML = '';
+    //projects
+    const project_arr = JSON.parse(localStorage.getItem('project'));
+    console.log(project_arr);
+
+
+    for(let i = 2; i < project_arr.length; i++){
+        const cur_project = new project(project_arr[i]);
+        project_tabs.update_project_arr(cur_project)
+    }
+
+    const sidebar_content = document.querySelector('.sidebar');
+    sidebar_content.innerHTML = '';
+    sidebar();
+
+    //todos
 
     
-    
-}
+};
